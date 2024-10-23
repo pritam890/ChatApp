@@ -1,8 +1,0 @@
-...... Message Model.....
-
-Ankush(senderId) ====> Hi Akhil
-Akhil(recieverId) ====> Hi Ankush
-
-senderId
-recieverId
-message=""
