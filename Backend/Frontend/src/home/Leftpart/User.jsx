@@ -10,12 +10,12 @@ const User = ({user}) => {
   const isOnline=onlineUsers.includes(user._id)
   return (
     <div 
-      className={`hover:bg-slate-600 duration-300 ${isSelected? "bg-slate-700":""}`}
+      className={`hover:bg-red-100 duration-300 ${isSelected? "bg-orange-200":""}`}
       onClick={()=>setSelectedConversation(user)}>
-      <div className='flex space-x-4 px-8 py-3 hover:bg-slate-800 rounded-md'>
+      <div className='flex space-x-4 px-8 py-3 hover:bg-red-100 rounded-md'>
             <div className={`avatar ${isOnline? "online": ""}`}>
                 <div className="w-12 rounded-full">
-                    <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                    <img src={user.image.url}/>
                 </div>
             </div>
             <div>

@@ -6,7 +6,7 @@ import Logout from "./Logout";
 function Left() {
   return (
     <div
-      className="w-full bg-black text-gray-300"
+      className="w-full bg-gray-300 text-gray-800"
       style={{
         scrollbarWidth: "none", // Firefox
         msOverflowStyle: "none", // IE and Edge

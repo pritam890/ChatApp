@@ -4,7 +4,7 @@ const Message = ({message}) => {
   const authuser = JSON.parse(localStorage.getItem("ChatApp"))
   const itsMe= message.senderId===authuser.user._id
   const chatName = itsMe? "chat-end" : "chat-start"
-  const chatColor = itsMe? "bg-blue-500" : ""
+  const chatColor = itsMe? "bg-blue-500" : "bg-orange-300"
 
   const createdAt=new Date(message.createdAt)
   const formattedTime=createdAt.toLocaleTimeString([],{

@@ -25,10 +25,10 @@ const Search = () => {
         <div className='px-6 py-4'>
       <form onSubmit={handleSubmit}>
         <div className='flex space-x-3'>
-            <label className="border-[1px] border-gray-700 rounded-lg p-3 bg-slate-900 flex items-center gap-2 w-[80%]">
+            <label className="border-[1px] border-gray-100 rounded-lg p-3 bg-gray-200 flex items-center gap-2 w-[80%]">
                 <input 
                     type="text" 
-                    className="grow outline-none bg-black"
+                    className="grow outline-none bg-gray-200"
                     placeholder="Search" 
                     value={search}
                     onChange={(e)=>setSearch(e.target.value)}

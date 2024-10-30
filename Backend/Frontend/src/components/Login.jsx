@@ -2,9 +2,8 @@ import React from 'react'
 import { useForm } from "react-hook-form"
 import axios from "axios"
 import { useAuth } from '../context/Authprovider'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
-
 const Login = () => {
     const [authUser, setAuthUser]=useAuth()
     const {
@@ -37,10 +36,10 @@ const Login = () => {
       }
   return (
     <>
-      <div className='flex bg-slate-800 h-screen items-center justify-center'>
-        <form onSubmit={handleSubmit(onSubmit)} className='border border-white px-6 py-2 rounded-md space-y-3 w-96 h-95'>
-            <h1 className='text-2xl text-center'><span className='text-gray-300'>Chat</span><span className='text-green-500 font-semibold'>App</span></h1>
-            <h2 className='text-xl text-gray-300 font-bold'>Login</h2>
+      <div className='flex bg-gray-100 h-screen items-center justify-center'>
+        <form onSubmit={handleSubmit(onSubmit)} className='border border-gray-800 px-6 py-2 rounded-md space-y-3 w-96 h-95'>
+            <h1 className='text-2xl text-center'><span className='text-gray-500'>Chat</span><span className='text-green-500 font-semibold'>App</span></h1>
+            <h2 className='text-xl text-blue-500 font-bold'>Login</h2>
             <label className="input input-bordered flex items-center gap-2">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -70,9 +69,9 @@ const Login = () => {
             </label>
             {errors.password &&  <span className=' text-red-500 text-sm font-semibold'>This field is required</span>}
             {/* Text & Button */}
-            <div className='flex justify-between text-gray-300'>
+            <div className='flex justify-between text-gray-500'>
                 <p>New user? <Link to={"/signup"} className='text-blue-500 underline cursor-pointer'>Signup</Link></p>
-                <input type="submit" value="Login" className='text-white bg-green-500 px-2 py-1 rounded-md'/>
+                <input type="submit" value="Login" className='text-white bg-green-500 px-2 py-1 rounded-md cursor-pointer'/>
             </div>
         </form>
       </div>

@@ -1,11 +1,12 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs"
 import createTokenAndSaveCookies from "../jwt/generateToken.js"
+import uploadToCloudinary from "../config/cloudinaryConfig.js";
 
 
 
 export const signup=async(req,res)=>{
-    const {fullname,email,password,confirmpassword}=req.body;
+    const {fullname,email,password,confirmpassword,image}=req.body;
     try{
         if(password!=confirmpassword){
             return res.status(400).json({error:"Passwords do not match"})
@@ -14,12 +15,18 @@ export const signup=async(req,res)=>{
         if(user){
             return res.status(400).json({error:"User already registered"})
         }
+        let imageData = {}
+        if(image){
+            const results = await uploadToCloudinary(image, "my-profile")
+            imageData = results
+        }
         // Hashing the password
         const hashPassword=await bcrypt.hash(password,10)
         const newUser = await new User({
             fullname,
             email,
-            password:hashPassword
+            password:hashPassword,
+            image: imageData
         })
         await newUser.save()
         if(newUser){
@@ -28,7 +35,8 @@ export const signup=async(req,res)=>{
                 user:{
                     _id:newUser._id,
                     fullname:newUser.fullname,
-                    email:newUser.email
+                    email:newUser.email,
+                    image:newUser.image
                 }
             })
         }
@@ -50,7 +58,8 @@ export const login=async(req,res)=>{
         res.status(200).json({message:"User login successfully", user:{
             _id:user._id,
             fullname:user.fullname,
-            email:user.email
+            email:user.email,
+            image:user.image
         }})
     }catch(error){
         console.log(error)
@@ -78,3 +87,4 @@ export const allUsers=async(req,res)=>{
         console.log("Error in alluser controller: "+ error)
     }
 }
+

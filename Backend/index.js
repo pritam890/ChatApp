@@ -28,6 +28,7 @@ try{
 app.use("/api/user",userRoute)
 app.use("/api/message",messageRoute)
 
+
 // Code for deployment
 if(process.env.NODE_ENV === "production"){
     const dirPath = path.resolve()

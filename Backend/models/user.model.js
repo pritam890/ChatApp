@@ -20,6 +20,16 @@ const userSchema=mongoose.Schema({
         type:String,
            
     },
+    image:{
+        publicId:{
+            type: String,
+            required: true,
+        },
+        url: {
+            type: String,
+            required: true,
+        }
+    }  // URL from Cloudinary
 },{timestamps:true}) // createdAt & updatedAt
 
 const User=mongoose.model("User",userSchema)

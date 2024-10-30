@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from "react-hook-form"
 import axios from "axios"
 import { useAuth } from '../context/Authprovider'
@@ -7,12 +7,29 @@ import toast from 'react-hot-toast'
 
 const Signup = () => {
     const [authUser, setAuthUser]=useAuth()
+    const [image, setImage] = useState(null);
+    const [imageBase64, setImageBase64] = useState("");
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors },
       } = useForm()
+      // convert image file to base64
+    const setFileToBase64 = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          setImageBase64(reader.result);
+        };
+      };
+    
+      // receive file from form
+        const handleImage = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+        setFileToBase64(file);
+      };
       // watch the password and confirm password field
       const password = watch("password","")
       const confirmpassword = watch("confirmpassword","")
@@ -25,7 +42,8 @@ const Signup = () => {
             fullname: data.fullname,
             email: data.email,
             password: data.password,
-            confirmpassword: data.confirmpassword
+            confirmpassword: data.confirmpassword,
+            image: imageBase64
         }
         //console.log(userInfo)
         await axios.post("/api/user/signup",userInfo)
@@ -45,11 +63,11 @@ const Signup = () => {
       }
   return (
     <>
-      <div className='flex bg-slate-800 h-screen items-center justify-center'>
+      <div className='flex bg-gray-100 h-screen items-center justify-center'>
         <form onSubmit={handleSubmit(onSubmit)}
-            className='border border-white px-6 py-2 rounded-md space-y-3 w-96 h-95'>
-            <h1 className='text-2xl text-center'><span className='text-gray-300'>Chat</span><span className='text-green-500 font-semibold'>App</span></h1>
-            <h2 className='text-xl text-gray-300 font-bold'>Signup</h2>
+            className='border border-gray-800 px-6 py-2 rounded-md space-y-3 w-96 h-95'>
+            <h1 className='text-2xl text-center'><span className='text-gray-600'>Chat</span><span className='text-green-500 font-semibold'>App</span></h1>
+            <h2 className='text-xl text-blue-500 font-bold'>Signup</h2>
             {/* fullname */}
             <label className="input input-bordered flex items-center gap-2">
             <svg
@@ -105,8 +123,29 @@ const Signup = () => {
             <input type="password" className="grow" placeholder="Confirm Password" {...register("confirmpassword", { required: true, validate:validatePasswordMatch })}/>
             </label>
             {errors.confirmpassword &&  <span className=' text-red-500 text-sm font-semibold'>{errors.confirmpassword.message}</span>}
+            
+            <label
+                htmlFor="profile_image"
+                className="block font-medium text-deepgray"
+            >
+                Upload image*
+            
+
+            <input
+                name="image"
+                className="w-full rounded-lg border-gray-200 p-3 text-sm"
+                placeholder="Image"
+                type="file"
+                accept="image/*"
+                
+                onChange={handleImage}
+            />
+            </label>
+                
+            
+            
             {/* Text & Button */}
-            <div className='flex justify-between text-gray-300'>
+            <div className='flex justify-between text-gray-600'>
                 <p>Have an account? 
                 <Link to={"/login"} className='text-blue-500 underline cursor-pointer'>
                     Login

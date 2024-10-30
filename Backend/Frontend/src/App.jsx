@@ -1,15 +1,18 @@
-import React from 'react';
-import Left from './home/Leftpart/Left';
-import Right from './home/Rightpart/Right';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import { useAuth } from './context/Authprovider';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
+import React from "react";
+import Left from "./home/Leftpart/Left";
+import Right from "./home/Rightpart/Right";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import { useAuth } from "./context/Authprovider";
+import { Toaster } from "react-hot-toast";
 
-const App = () => {
-  const [authUser] = useAuth();  // Keeping authUser from context
+import { Navigate, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
 
+
+function App() {
+  const [authUser, setAuthUser] = useAuth();
+  console.log(authUser);
   return (
     <>
       <Routes>
@@ -17,35 +20,52 @@ const App = () => {
           path="/"
           element={
             authUser ? (
+              // <div className="flex h-screen">
+              //   <Left />
+              //   <Right />
+              // </div>
               <div className="drawer lg:drawer-open">
-                <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+                <input
+                  id="my-drawer-2"
+                  type="checkbox"
+                  className="drawer-toggle"
+                />
                 <div className="drawer-content flex flex-col items-center justify-center">
                   <Right />
                 </div>
                 <div className="drawer-side">
-                  <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
-                  <ul
-                    className="menu w-80 min-h-full bg-black text-base-content"
-                    style={{
-                      scrollbarWidth: 'none', // Firefox
-                      msOverflowStyle: 'none', // IE and Edge
-                    }}
-                  >
+                  <label
+                    htmlFor="my-drawer-2"
+                    aria-label="close sidebar"
+                    className="drawer-overlay"
+                  ></label>
+                  <ul className="menu w-80 min-h-full bg-gray-200 text-base-content">
                     <Left />
                   </ul>
                 </div>
               </div>
             ) : (
-              <Navigate to="/login" />
+              <Navigate to={"/home"} />
             )
           }
         />
-        <Route path="/login" element={authUser ? <Navigate to="/" /> : <Login />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route
+          path="/home"
+          element={<Home/>}
+        />
+        <Route
+          path="/login"
+          element={authUser ? <Navigate to="/" /> : <Login />}
+        />
+        <Route
+          path="/signup"
+          element={authUser ? <Navigate to="/login" /> : <Signup />}
+        />
+        
       </Routes>
       <Toaster />
     </>
   );
-};
+}
 
 export default App;

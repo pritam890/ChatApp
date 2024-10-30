@@ -12,16 +12,16 @@ const Typesend = () => {
   }
   return (
     <form onSubmit={handleSubmit}>
-      <div className='flex space-x-1 h-[8vh]  bg-gray-800'>
+      <div className='flex space-x-1 h-[8vh]  bg-gray-100'>
         <div className='w-[70%] mx-4'>
             <input type="text" 
             placeholder="Type here" 
             value={message}
             onChange={(e)=>setMessage(e.target.value)}
-            className="border border-gray-700 outline-none rounded-xl mt-1 px-4 py-3 bg-black w-full" />
+            className="border border-gray-400 outline-none rounded-xl mt-1 px-4 py-3 bg-white w-full" />
         </div>
         <button>
-            <IoSend className='text-3xl'/>
+            <IoSend className='text-3xl text-gray-600'/>
         </button>
       </div>
     </form>
