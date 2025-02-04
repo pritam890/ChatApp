@@ -46,28 +46,35 @@ export const signup=async(req,res)=>{
         console.log("Internal server error")
     }
 }
-export const login = async (req,res)=>{
-    try{
+export const login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
 
-        const {email, password} = req.body
-        const user = await userModel.findOne({email})
-        if(!user){
-            return res.json({success:false, message: "User doesn't exist"})
+        if (!user) {
+            return res.status(400).json({ success: false, error: "Invalid credentials" });
         }
 
-        const isMatched = await bcrypt.compare(password, user.password)
-        if(isMatched){
-            const token = jwt.sign({id:user._id}, process.env.JWT_TOKEN)
-            res.json({success:true, token, user: {name: user.name}})
-        }else{
-            return res.json({success:false, message: "Invalid credentials"})
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ success: false, error: "Invalid credentials" });
         }
 
-    }catch(error){
-        console.log(error)
-        res.json({success: false, message: error.message})
+        createTokenAndSaveCookies(user._id, res);
+        return res.status(200).json({
+            message: "User login successful",
+            user: {
+                _id: user._id,
+                fullname: user.fullname,
+                email: user.email,
+                image: user.image
+            }
+        });
+    } catch (error) {
+        console.error("Internal server error:", error);
+        return res.status(500).json({ success: false, error: "Internal server error" });
     }
-}
+};
 export const logout=async(req,res)=>{
     try{
         res.clearCookie("jwt")
