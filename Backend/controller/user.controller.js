@@ -46,24 +46,26 @@ export const signup=async(req,res)=>{
         console.log("Internal server error")
     }
 }
-export const login=async(req,res)=>{
-    const {email,password}=req.body
-    try{    
-        const user=await User.findOne({email})
-        const isMatch=await bcrypt.compare(password,user.password)
-        if(!user || !isMatch){
-            return res.status(400).json({error:"Invalid credential"})
+export const login = async (req,res)=>{
+    try{
+
+        const {email, password} = req.body
+        const user = await userModel.findOne({email})
+        if(!user){
+            return res.json({success:false, message: "User doesn't exist"})
         }
-        createTokenAndSaveCookies(user._id,res)
-        res.status(200).json({message:"User login successfully", user:{
-            _id:user._id,
-            fullname:user.fullname,
-            email:user.email,
-            image:user.image
-        }})
+
+        const isMatched = await bcrypt.compare(password, user.password)
+        if(isMatched){
+            const token = jwt.sign({id:user._id}, process.env.JWT_SECRET)
+            res.json({success:true, token, user: {name: user.name}})
+        }else{
+            return res.json({success:false, message: "Invalid credentials"})
+        }
+
     }catch(error){
         console.log(error)
-        console.log("Internal server error")
+        res.json({success: false, message: error.message})
     }
 }
 export const logout=async(req,res)=>{
