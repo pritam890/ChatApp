@@ -24,6 +24,8 @@ const Login = () => {
             console.log(response.data)
             if(response.data){
                 toast.success("Login successful")
+            }else{
+                toast.error("Invalid credentials")
             }
             localStorage.setItem("ChatApp", JSON.stringify(response.data))
             setAuthUser(response.data)
